@@ -7,6 +7,7 @@ return [
         'parent_id' => null,
         'name' => 'page::messages.pages',
         'icon' => 'fas fa-file-edit',
-        'url' => "#"
+        'url' => route('admin.pages.index'),
+        'permissions' => ['pages.view']
     ]
 ];

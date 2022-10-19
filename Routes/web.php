@@ -14,3 +14,12 @@
 use Modules\Page\Http\Controllers\PageController;
 
 Route::get('{slug?}', [PageController::class, 'index']);
+
+//Admin
+Route::prefix(config('core.admin_prefix'))
+->middleware('auth:admins')
+->as('admin.')
+->namespace('Admin')
+->group(function() {
+    Route::resource('pages', 'PageController');
+});
