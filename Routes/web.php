@@ -21,5 +21,6 @@ Route::prefix(config('core.admin_prefix'))
 ->as('admin.')
 ->namespace('Admin')
 ->group(function() {
-    Route::resource('pages', 'PageController');
+    Route::post('pages/delete', 'PageController@deletes')->name('pages.destroy');
+    Route::resource('pages', 'PageController', ['except' => ['destroy', 'show']]);
 });

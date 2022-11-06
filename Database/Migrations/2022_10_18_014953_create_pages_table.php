@@ -19,10 +19,9 @@ class CreatePagesTable extends Migration
             $table->id();
             $table->string('slug')->unique();
             $table->string('name');
-            $table->string('description');
             $table->longText('content');
-            $table->string('seo_title');
-            $table->string('seo_description');      
+            $table->string('seo_title')->nullable();
+            $table->string('seo_description')->nullable();      
             $table->integer('template')->default(PageTemplateEnum::DEFAULT);
             $table->integer('status')->default(PageStatusEnum::DRAFT);
             $table->timestamps();

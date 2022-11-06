@@ -3,36 +3,33 @@
 namespace Modules\Page\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-use Omaicode\MediaLibrary\InteractsWithMedia;
+use Modules\Media\Interfaces\HasMedia;
+use Modules\Media\Traits\InteractsWithMedia;
 
-class Page extends Model
+class Page extends Model implements HasMedia
 {
     use InteractsWithMedia;
 
     protected $fillable = [
         'slug',
         'name',
-        'description',
         'content',
         'template',
         'seo_title',
         'seo_description',
-        'status'
+        'status',
+        'featured_image'
     ];
 
-    protected $appends = [
-        'featured_image'
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('page_images')
+        $this->addMediaCollection('default')
         ->useFallbackUrl('/images/default-placeholder.png')
         ->useFallbackPath(public_path('/images/default-placeholder.png'));        
     } 
-    
-    public function getFeaturedImageAttribute()
-    {
-        return $this->getFirstMediaUrl('page_images');
-    }
 }

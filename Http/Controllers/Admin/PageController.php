@@ -2,14 +2,18 @@
 
 namespace Modules\Page\Http\Controllers\Admin;
 
+use ApiResponse;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Modules\Core\Contracts\AdminPage;
 use Modules\Core\Http\Controllers\FormBuilderController;
 use Modules\Page\Entities\Page;
+use Modules\Page\Enums\PageStatusEnum;
+use Modules\Page\Enums\PageTemplateEnum;
 use Modules\Page\Repositories\PageRepository;
 use Modules\Page\Tables\PageTable;
-use Omaicode\FormBuilder\Form;
+use Modules\Form\Form;
+use Modules\Form\Tools;
 
 class PageController extends FormBuilderController
 {
@@ -36,14 +40,32 @@ class PageController extends FormBuilderController
 
     protected function form()
     {
+        $statuses = PageStatusEnum::asSelectArray();
+        $templates = PageTemplateEnum::asSelectArray();
         $form = new Form(new Page);
 
-        $form->text('name', __('page::messages.name'));
+        $form->slug('name', 'slug', __('page::messages.name'))
+              ->creationRules('required|unique:pages,slug')
+              ->updateRules('required|unique:pages,slug,{{id}},id');
         $form->ckeditor('content', __('page::messages.content'));
-        $form->textarea('description', __('page::messages.description'))->rows(2);
         $form->text('seo_title', __('page::messages.seo_title'));
         $form->textarea('seo_description', __('page::messages.seo_description'))->rows(2);
 
+        $form->tools(function(Tools $tool) use ($statuses, $templates) {
+            $tool->select('status', __('page::messages.status'))->options($statuses)->default(PageStatusEnum::DRAFT);
+            $tool->select('template', __('page::messages.template'))->options($templates)->default(PageTemplateEnum::DEFAULT);
+            $tool->media('featured_image', __('page::messages.featured_image'), Page::class)->placeholder(__('page::messages.select_featured_image'));
+        });
+
         return $form;
     }
+
+
+    public function deletes()
+    {
+        $rows = $this->request->rows;
+        Page::whereIn('id', $rows)->delete();
+
+        return ApiResponse::success();
+    }    
 }
