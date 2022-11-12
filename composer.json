@@ -1,5 +1,6 @@
 {
     "name": "omaicode/ocms-page",
+    "minimum-stability": "dev",
     "description": "",
     "authors": [
         {
