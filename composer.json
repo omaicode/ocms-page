@@ -1,7 +1,18 @@
 {
     "name": "omaicode/ocms-page",
     "minimum-stability": "dev",
-    "description": "",
+    "description": "Page module for OCMS",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.3",
+        "omaicode/laravel-enum": "*@dev",
+        "omaicode/larinfo": "*@dev",
+        "omaicode/modules-management": "*@dev",
+        "omaicode/permissions-management": "*@dev",
+        "omaicode/repository": "*@dev",
+        "omaicode/laravel-table-builder": "*@dev",
+        "omaicode/log-viewer": "*@dev"
+    },
     "authors": [
         {
             "name": "Bieber Kieu",
