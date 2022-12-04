@@ -35,9 +35,9 @@ class PageController extends Controller
                 'template' => PageTemplateEnum::HOME,
                 'status'   => PageStatusEnum::PUBLISH
             ]);
-            
+
             if($home_page->count() > 0) {
-                $view = 'default';
+                $view = 'home';
                 $data = $home_page->first();
             }
         } else {
@@ -47,13 +47,13 @@ class PageController extends Controller
             ]);
 
             if($page->count() > 0) {
-                $view = 'default';
+                $view = strtolower(PageTemplateEnum::getKey($page->first()->template));
                 $data = $page->first();
             } else {
                 return abort(404);
             }
         }
                 
-        return view($view, $data);
+        return view($view, $data)->withShortcodes();
     }
 }
