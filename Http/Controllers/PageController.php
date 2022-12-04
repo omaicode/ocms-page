@@ -47,7 +47,7 @@ class PageController extends Controller
             ]);
 
             if($page->count() > 0) {
-                $view = strtolower(PageTemplateEnum::getKey($page->first()->template));
+                $view = strtolower(PageTemplateEnum::getKey($page->first()->template)) ?? 'default';
                 $data = $page->first();
             } else {
                 return abort(404);
