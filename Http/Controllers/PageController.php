@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Modules\Page\Enums\PageStatusEnum;
 use Modules\Page\Enums\PageTemplateEnum;
 use Modules\Page\Repositories\PageRepository;
+use Omaicode\Modules\Facades\Module;
 
 class PageController extends Controller
 {
@@ -49,6 +50,14 @@ class PageController extends Controller
             if($page->count() > 0) {
                 $view = strtolower(PageTemplateEnum::getKey((int)$page->first()->template));
                 $data = $page->first();
+            } else if(Module::has('Blog') && Module::isEnabled('Blog')) {
+                $post = app(\Modules\Blog\Repositories\PostRepository::class)->findByField('slug', $slug);
+                if($post->count() > 0) {
+                    $view = 'post';
+                    $data = $post->first();
+                } else {
+                    return abort(404);
+                }
             } else {
                 return abort(404);
             }
