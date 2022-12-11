@@ -23,6 +23,11 @@ class PageController extends FormBuilderController
 
     public function __construct(Request $request)
     {
+        $this->middleware('can:page.view', ['index']);
+        $this->middleware('can:page.edit', ['edit', 'update']);
+        $this->middleware('can:page.create', ['create', 'store']);
+        $this->middleware('can:page.delete', ['deletes']);
+
         $this->request = $request;
         $this->breadcrumb[] = [
             'title'  => __('page::messages.pages'), 
