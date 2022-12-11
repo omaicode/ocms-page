@@ -13,7 +13,7 @@
 
 use Modules\Page\Http\Controllers\PageController;
 
-Route::get('{slug?}', [PageController::class, 'index']);
+Route::get('{slug?}', [PageController::class, 'index'])->where('slug', '^(?!api|'.config('core.admin_prefix', 'admin').'|assets|guest).*$');
 
 //Admin
 Route::prefix(config('core.admin_prefix'))
