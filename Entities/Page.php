@@ -28,7 +28,8 @@ class Page extends Model implements HasMedia
     ];
 
     protected $appends = [
-        'title'
+        'title',
+        'image_url'
     ];
 
     public function registerMediaCollections(): void
@@ -41,5 +42,16 @@ class Page extends Model implements HasMedia
     public function getTitleAttribute()
     {
         return $this->name;
+    }
+
+    public function getImageUrlAttribute()
+    {
+        $images = $this->getMediaRepository()->getByUuids([$this->featured_image]);
+        
+        if($images->count() <= 0) {
+            return null;
+        }
+
+        return $images->first()->getFullUrl();
     }
 }
