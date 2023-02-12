@@ -32,12 +32,10 @@ class Page extends Model implements HasMedia
         'image_url'
     ];
 
-    public function registerMediaCollections(): void
+    public function registerMediaSavePath(): void
     {
-        $this->addMediaCollection('default')
-        ->useFallbackUrl('/images/default-placeholder.png')
-        ->useFallbackPath(public_path('/images/default-placeholder.png'));        
-    } 
+        $this->setMediaSavePath('page')->useFallbackUrl('/images/default-placeholder.png');
+    }
 
     public function getTitleAttribute()
     {
@@ -46,12 +44,6 @@ class Page extends Model implements HasMedia
 
     public function getImageUrlAttribute()
     {
-        $images = $this->getMediaRepository()->getByUuids([$this->featured_image]);
-        
-        if($images->count() <= 0) {
-            return null;
-        }
-
-        return $images->first()->getFullUrl();
+        return $this->getMediaUrl('featured_image');
     }
 }

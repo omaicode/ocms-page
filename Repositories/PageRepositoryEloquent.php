@@ -25,8 +25,6 @@ class PageRepositoryEloquent extends BaseRepository implements PageRepository
         return Page::class;
     }
 
-    
-
     /**
      * Boot up the repository, pushing criteria
      */
