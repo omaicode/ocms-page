@@ -52,7 +52,7 @@ class PageController extends FormBuilderController
         $form->slug('name', 'slug', __('page::messages.name'))
               ->creationRules('required|unique:pages,slug')
               ->updateRules('required|unique:pages,slug,{{id}},id');
-        $form->ckeditor('content', __('page::messages.content'));
+        $form->quillEditor('content', __('page::messages.content'));
         $form->text('seo_title', __('page::messages.seo_title'));
         $form->textarea('seo_description', __('page::messages.seo_description'))->rows(2);
 
