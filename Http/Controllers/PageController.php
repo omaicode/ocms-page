@@ -5,6 +5,7 @@ namespace Modules\Page\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Blog\Repositories\CategoryRepository;
 use Modules\Page\Enums\PageStatusEnum;
 use Modules\Page\Enums\PageTemplateEnum;
 use Modules\Page\Repositories\PageRepository;
@@ -51,7 +52,7 @@ class PageController extends Controller
                 $view = strtolower(PageTemplateEnum::getKey((int)$page->first()->template));
                 $data = $page->first();
             } else if(Module::has('Blog') && Module::isEnabled('Blog')) {
-                $post = app(\Modules\Blog\Repositories\PostRepository::class)->findByField('slug', $slug);
+                $post = app(\Modules\Blog\Repositories\PostRepository::class)->with('category')->findByField('slug', $slug);
                 if($post->count() > 0) {
                     $view = 'post';
                     $data = $post->first();
